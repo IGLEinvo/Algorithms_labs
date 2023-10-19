@@ -1,30 +1,39 @@
-class BinaryTree:
+class TreeNode:
     def __init__(self, value):
         self.value = value
         self.left = None
         self.right = None
 
 
-def branch_sums(root):
-    def helper(node, is_right):
-        if not node:
-            return 0
+def print_left_leaves(root):
+    if root is None:
+        return
 
-        if not node.left and not node.right and is_right:
-            print("leaf:", node.value)
-            return node.value
+    stack = [root]
+    left_leaves = []
+    left_leaves_sum = 0
 
-        return helper(node.left, True) + helper(node.right, True)
+    while stack:
+        node = stack.pop()
 
-    return helper(root, False)
+        if node.right:
+            stack.append(node.right)
 
+        if node.left:
+            if not node.left.left and not node.left.right:
+                left_leaves.append(node.left.value)
+                left_leaves_sum += node.left.value
+            stack.append(node.left)
 
-root = BinaryTree(3)
-root.left = BinaryTree(9)
-root.right = BinaryTree(20)
-root.right.left = BinaryTree(15)
-root.right.right = BinaryTree(7)
-root.left.right = BinaryTree(14)
+    if left_leaves:
+        print("Значення лівих листків:", left_leaves)
 
+    return left_leaves_sum
 
-print(branch_sums(root))
+root = TreeNode(3)
+root.left = TreeNode(9)
+root.right = TreeNode(20)
+# root.left.left = TreeNode(14)
+root.right.right = TreeNode(7)
+root.right.left = TreeNode(15)
+print((print_left_leaves(root)))
